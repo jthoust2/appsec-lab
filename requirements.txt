@@ -1,0 +1,10 @@
+flask>=3.0
+bcrypt>=4.0
+defusedxml>=0.7
+markupsafe>=2.1
+python-dotenv>=1.0
+bandit>=1.7
+pytest>=8.0
+semgrep>=1.0
+requests>=2.31
+lxml>=5.0

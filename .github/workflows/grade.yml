@@ -1,0 +1,39 @@
+name: Security Lab Grader
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  grade:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install flask bcrypt defusedxml \
+                      bandit pytest semgrep requests
+
+      - name: Run Bandit security scanner
+        run: |
+          echo "===== BANDIT REPORT ====="
+          bandit -r workspace/ -ll -f txt || true
+
+      - name: Run pytest (functional + security tests)
+        run: pytest tests/ -v --tb=short
+
+      - name: Run Semgrep OWASP rules
+        run: |
+          semgrep --config p/python \
+                  --config p/owasp-top-ten \
+                  workspace/ --error || true

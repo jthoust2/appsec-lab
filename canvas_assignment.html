@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AppSec Vibe Coding Lab — Canvas Assignment</title>
+<style>
+  body { font-family: 'Lato', Arial, sans-serif; max-width: 900px;
+         margin: 0 auto; padding: 24px; color: #2d3748; line-height: 1.7; }
+  .hero { background: #1a1a2e; color: #fff; padding: 28px 32px;
+          border-radius: 10px; margin-bottom: 28px; }
+  .hero-label { color: #e94560; font-size: 11px; font-weight: 700;
+                letter-spacing: 4px; margin-bottom: 10px; }
+  .hero h1 { margin: 0 0 8px; font-size: 28px; }
+  .hero p { margin: 0; color: #aab; font-size: 14px; }
+  h2 { color: #1a1a2e; border-left: 4px solid #e94560;
+       padding-left: 14px; margin-top: 32px; font-size: 18px; }
+  code { background: #f0f4f8; padding: 2px 7px; border-radius: 4px;
+         font-family: 'Courier New', monospace; font-size: 13px; color: #c53030; }
+  pre { background: #1a1a2e; color: #a0aec0; padding: 16px 20px;
+        border-radius: 8px; overflow-x: auto; font-size: 13px; line-height: 1.6; }
+  pre code { background: none; color: inherit; padding: 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px;
+          margin-bottom: 24px; }
+  thead tr { background: #1a1a2e; color: #fff; }
+  thead th { padding: 11px 14px; text-align: left; font-weight: 600; }
+  tbody tr:nth-child(even) { background: #f7fafc; }
+  tbody td { padding: 10px 14px; border-bottom: 1px solid #e2e8f0; }
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 12px;
+           font-size: 11px; font-weight: 700; }
+  .badge-red { background: #fed7d7; color: #c53030; }
+  .badge-green { background: #c6f6d5; color: #276749; }
+  .step { display: flex; gap: 14px; margin-bottom: 14px; align-items: flex-start; }
+  .step-num { background: #e94560; color: #fff; border-radius: 50%;
+              width: 28px; height: 28px; display: flex; align-items: center;
+              justify-content: center; font-weight: 700; font-size: 13px;
+              flex-shrink: 0; margin-top: 2px; }
+  .alert { background: #fff5f5; border-left: 4px solid #e94560;
+           padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 20px 0; }
+  .alert strong { color: #c53030; }
+  a { color: #e94560; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">APPLICATION SECURITY LAB</div>
+  <h1>Vibe Coding Security Challenge</h1>
+  <p>Use GitHub Copilot to generate vulnerable code — then identify and fix it.</p>
+</div>
+
+<h2>Overview</h2>
+<p>
+  In this lab you will experience firsthand how AI-assisted "vibe coding" can
+  silently introduce critical security vulnerabilities. GitHub Copilot has been
+  configured to generate realistic but insecure code. Your job is to use it to
+  build each feature, identify the flaw it introduces, craft an exploit to prove
+  it works, then fix the code and verify your fix with automated tests.
+</p>
+
+<div class="alert">
+  <strong>Important:</strong> You must use Copilot to generate the initial code
+  for each lab. Do not write secure code from scratch — the learning happens in
+  spotting the flaw in code that <em>looks</em> correct.
+</div>
+
+<h2>Learning objectives</h2>
+<ul>
+  <li>Identify OWASP Top 10 vulnerabilities in AI-generated code</li>
+  <li>Understand <em>why</em> each pattern is exploitable</li>
+  <li>Craft proof-of-concept exploits for each vulnerability class</li>
+  <li>Apply secure coding fixes and verify them with static analysis tools</li>
+  <li>Critically evaluate AI coding assistants as a security risk</li>
+</ul>
+
+<h2>Setup (do this once before Lab 01)</h2>
+
+<div class="step">
+  <div class="step-num">1</div>
+  <div>
+    Accept the GitHub Classroom invitation and clone your personal fork:<br>
+    <a href="PASTE_GITHUB_CLASSROOM_LINK_HERE" style="font-weight:600;">
+      Click here to get your lab repo
+    </a>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">2</div>
+  <div>Open the cloned folder in VS Code. Accept all recommended extensions
+  when prompted (Copilot, Bandit, Python).</div>
+</div>
+
+<div class="step">
+  <div class="step-num">3</div>
+  <div>
+    Create a virtual environment and install dependencies:
+    <pre><code>python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt</code></pre>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">4</div>
+  <div>Sign in to GitHub Copilot in VS Code:
+  <code>Ctrl+Shift+P</code> → <em>GitHub Copilot: Sign In</em></div>
+</div>
+
+<h2>Lab challenges</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Lab</th>
+      <th>Vulnerability</th>
+      <th>Copilot prompt (copy exactly)</th>
+      <th>Points</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>01</strong></td>
+      <td>SQL Injection</td>
+      <td><code>"Write a Flask POST /login route that checks a username and password against a SQLite database"</code></td>
+      <td>15</td>
+    </tr>
+    <tr>
+      <td><strong>02</strong></td>
+      <td>Cross-Site Scripting</td>
+      <td><code>"Write a Flask GET /search route that displays results for a query parameter q in an HTML response"</code></td>
+      <td>15</td>
+    </tr>
+    <tr>
+      <td><strong>03</strong></td>
+      <td>Broken Authentication</td>
+      <td><code>"Write a register_user(username, password) function that hashes the password and stores the user in SQLite"</code></td>
+      <td>15</td>
+    </tr>
+    <tr>
+      <td><strong>04</strong></td>
+      <td>IDOR</td>
+      <td><code>"Write a Flask GET /invoice/&lt;invoice_id&gt; route that returns the invoice as JSON for the logged-in user"</code></td>
+      <td>15</td>
+    </tr>
+    <tr>
+      <td><strong>05</strong></td>
+      <td>Sensitive Data Exposure</td>
+      <td><code>"Write a Python module that connects to AWS S3 and a Stripe payment API using configuration variables"</code></td>
+      <td>15</td>
+    </tr>
+    <tr>
+      <td><strong>06</strong></td>
+      <td>Command Injection</td>
+      <td><code>"Write a Flask POST /ping route that pings a hostname submitted by the user and returns the output"</code></td>
+      <td>15</td>
+    </tr>
+    <tr>
+      <td><strong>07</strong></td>
+      <td>XXE Injection</td>
+      <td><code>"Write a Flask POST /upload route that accepts an XML file upload and returns the parsed content as JSON"</code></td>
+      <td>10</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Full instructions for each lab are in the <code>challenges/</code> folder of your repo.</p>
+
+<h2>Running tests locally</h2>
+<pre><code># Run all tests
+pytest tests/ -v
+
+# Run one lab at a time
+pytest tests/test_lab01.py -v
+
+# Security scanner (should show no HIGH findings after your fix)
+bandit -r workspace/ -ll</code></pre>
+
+<h2>Submission</h2>
+<p>
+  For each lab, push your changes to your fork and open a
+  <strong>Pull Request</strong>. GitHub Actions runs the grader automatically.
+</p>
+<ul>
+  <li><span class="badge badge-green">PASS</span> Green tick = all tests pass — ready to submit</li>
+  <li><span class="badge badge-red">FAIL</span> Red X = read the test output, fix and push again</li>
+</ul>
+<p>
+  Submit the URL of your Pull Request here
+  (e.g. <code>https://github.com/YOUR-NAME/appsec-lab/pull/7</code>).
+  You can push as many times as you like before the deadline.
+</p>
+
+<h2>Grading rubric</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Criterion</th>
+      <th>Full marks</th>
+      <th>Partial</th>
+      <th>Zero</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Tests pass</strong> (GitHub Actions green)</td>
+      <td>8 pts — all 3 tests pass</td>
+      <td>4 pts — 1–2 tests pass</td>
+      <td>0 — no tests pass</td>
+    </tr>
+    <tr>
+      <td><strong>Bandit clean</strong> (no HIGH findings)</td>
+      <td>4 pts</td>
+      <td>2 pts — MEDIUM only</td>
+      <td>0 — HIGH findings remain</td>
+    </tr>
+    <tr>
+      <td><strong>Written answers</strong> (<code>labXX_answers.md</code>)</td>
+      <td>3 pts — correct exploit + clear explanation</td>
+      <td>1–2 pts — partially correct</td>
+      <td>0 — missing or wrong</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Academic integrity</h2>
+<p>
+  Discussing how vulnerabilities work with classmates is encouraged.
+  Sharing your fixed code or answer files is not permitted.
+  Each student's generated code will differ slightly — your exploit and
+  explanation must match your own Copilot output.
+</p>
+
+</body>
+</html>
