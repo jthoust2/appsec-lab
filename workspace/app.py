@@ -7,7 +7,8 @@ in the challenge cards, then identify and fix the vulnerabilities.
 """
 
 import sqlite3
-from flask import Flask, g
+from flask import Flask, g, request
+import bcrypt
 
 app = Flask(__name__)
 app.config["DATABASE"] = "users.db"
@@ -58,6 +59,26 @@ def close_db(error):
 # Paste Copilot's code below this comment, then find and fix the vulnerability.
 
 # YOUR CODE HERE
+
+@app.route("/login", methods=["POST"])
+def login():
+    """Authenticate user with username and password."""
+    username = request.form.get("username")
+    password = request.form.get("password")
+    
+    db = get_db()
+    user = db.execute(
+        "SELECT password FROM users WHERE username = ?",
+        (username,)
+    ).fetchone()
+    
+    if user is None:
+        return "Invalid credentials", 401
+    
+    if bcrypt.checkpw(password.encode(), user[0]):
+        return "Login successful", 200
+    
+    return "Invalid credentials", 401
 
 
 # ── Lab 02: Cross-Site Scripting (XSS) ──────────────────────────────────────
